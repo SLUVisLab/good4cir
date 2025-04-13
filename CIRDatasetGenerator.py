@@ -348,8 +348,8 @@ class CIRDatasetGenerator:
                             data = json.load(json_file)
                             if len(data['difference_captions']) > min_caption_length:
                                 entry = {
-                                    'query_image': data['query_image']['url'],
-                                    'retrieved_image': data['retrieved_image']['url'],
+                                    'reference_image': data['query_image']['url'],
+                                    'target_image': data['retrieved_image']['url'],
                                     'difference_captions': self.clean(data['difference_captions'])
                                 }
                                 processed_data.append(entry)

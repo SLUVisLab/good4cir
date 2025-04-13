@@ -2,6 +2,8 @@ import os
 import json
 import time
 import openai
+import re
+import language_tool_python
 
 class CIRDatasetGenerator:
 
@@ -81,6 +83,20 @@ class CIRDatasetGenerator:
 
             with open(json_file_path, 'w') as json_file:
                 json.dump(data, json_file, indent=4) 
+
+    def execute(self):
+        self.shard_output_directory()
+        self.run_stages()
+        self.data_post_processing()
+
+    def run_stages(self):
+        for i in range(1, 4):
+            self.create_batch_input_files(stage = i)
+            self.collect_batch_input_files(stage = i)
+            self.send_batches(stage = i)
+            self.collect_responses(stage = i)
+            print(f"completed: stage {i}")
+
 
     def create_batch_input_files(self, stage: int):
                 
@@ -221,8 +237,6 @@ class CIRDatasetGenerator:
 
     def send_batches(self, stage: int):
 
-        print("OpenAI package version:", openai.__version__)
-
         openai.api_key = self.api_key
  
         batches = []
@@ -305,5 +319,42 @@ class CIRDatasetGenerator:
             elif batch.status == 'failed':
                 continue
 
-    def data_post_processing(self):
-        pass
+    def clean(self, captions: str) -> list[str]:
+
+        cleaned_sentences = []
+
+        tool = language_tool_python.LanguageTool('en-US')
+
+        for caption in str(captions).split('.'):
+            caption = re.sub(r'^[^A-Z]*', '', caption)
+            matches = tool.check(caption)
+            if len(matches) == 0 and len(caption) > 0:
+                cleaned_sentences.append(caption.strip()+'.')
+            else:
+                continue
+
+        return cleaned_sentences
+
+    def data_post_processing(self, min_caption_length=100):
+
+        processed_data = []
+
+        for root, dirs, files in os.walk(self.output_dir):
+            for file in files:
+                if file.endswith('.json'):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, 'r') as json_file:
+                        try:
+                            data = json.load(json_file)
+                            if len(data['difference_captions']) > min_caption_length:
+                                entry = {
+                                    'query_image': data['query_image']['url'],
+                                    'retrieved_image': data['retrieved_image']['url'],
+                                    'difference_captions': self.clean(data['difference_captions'])
+                                }
+                                processed_data.append(entry)
+                        except (json.JSONDecodeError, KeyError):
+                            continue 
+
+        with open('dataset.json', 'w') as outfile:
+            json.dump(processed_data, outfile, indent=4)

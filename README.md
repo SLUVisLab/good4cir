@@ -63,14 +63,6 @@ For every entry in the `.json` file, ensure that the first key is labeled `refer
 
 We provide general prompts that may work across various data domains, but we encourage you to modify the prompts for all stages to best fit your use case.
 
-### Run
-
-Run the `run.py` script using the following command:
-
-```
-python run.py
-```
-
 ### Post Processing
 
 While the output from the model is not always consistent, the `CIRDatasetGenerator.py` file includes post-processing logic to extract the cleaned dataset into a `dataset.json` file. However, the included code works best when you prompt the model at stage 3 to *"format all difference captions as a list of sentences ending in periods."* For ease of use, please maintain this in your own constructed prompts. After cleanup, each entry in the `dataset.json` file should look similar to the following: 
@@ -89,6 +81,14 @@ While the output from the model is not always consistent, the `CIRDatasetGenerat
         "Remove any visible chairs and incorporate compact and space-efficient bathroom fixtures to enhance the functionality of the area."
     ]
 }
+```
+
+### Run
+
+Run the `run.py` script using the following command:
+
+```
+python run.py
 ```
 
 

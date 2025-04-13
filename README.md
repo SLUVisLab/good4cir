@@ -19,7 +19,7 @@ download here
 **Example:**
 ![](examples/CIRR_R.png)
 
-**<u>Hotel-CIR<sub>R</sub></u>**: We synthesize a composed image retrieval dataset for the hotels-domain, a domain of low intra-class variance that requires the identification of fine-grained differences. 
+**<u>Hotel-CIR</u>**: We synthesize a composed image retrieval dataset for the hotels-domain, a domain of low intra-class variance that requires the identification of fine-grained differences. 
 
 download here
 

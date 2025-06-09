@@ -1,0 +1,5 @@
+log_dir: ""
+model_dir: ""
+cirr_data_path: ""
+hotel_data_path: ""
+circo_data_path: ""

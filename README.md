@@ -14,14 +14,14 @@ We generate two composed image retrieval datasets to show the effectiveness of t
 
 **Note**: The CIRR<sub>R</sub> dataset does not contain rewritten captions for all original CIRR examples.
 
-download here
+[Download] (https://drive.google.com/drive/folders/15P3RKfajeLJHuehm3HAiPWM5a7HGZuxv?usp=sharing)
 
 **Example:**
 ![](examples/CIRR_R.png)
 
 **<u>Hotel-CIR</u>**: We synthesize a composed image retrieval dataset for the hotels-domain, a domain of low intra-class variance that requires the identification of fine-grained differences. 
 
-download here
+[Download] (https://drive.google.com/drive/folders/1eyIv76JiV5E4bABkhxqKzJwnLBflyzoW?usp=sharing)
 
 **Example:**
 ![](examples/Hotel-CIR.png)
